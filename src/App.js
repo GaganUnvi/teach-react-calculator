@@ -11,10 +11,18 @@ function App() {
     setValue(parseFloat(newValue));
   };
 
+  const appendDot = (dot) => {
+    if (value % 1 === 0) {
+      const newTotal = `${value}${dot}`;
+      setValue(newTotal);
+      console.log(newTotal);
+    }
+  };
+
   const changeAction = (newAction) => {
     if (!action) {
       // if action wasn't set beforehand
-      setTotal(value);
+      setTotal(total + value);
       setValue(0);
     }
 
@@ -26,6 +34,8 @@ function App() {
     else if (action === '-') setTotal(total - value);
     else if (action === '*') setTotal(total * value);
     else if (action === '/') setTotal(total / value);
+    else if (action === '%') setTotal(total / 100);
+    else if (action === '+/-') setTotal(total * -1);
 
     setValue(0);
   };
@@ -51,10 +61,24 @@ function App() {
           >
             C
           </div>
-          <div name="+/-" className="button l" onClick={() => undefined}>
+          <div
+            name="+/-"
+            className="button l"
+            onClick={() => {
+              setTotal((total + value) * -1);
+              setValue(0);
+            }}
+          >
             +/-
           </div>
-          <div name="%" className="button l" onClick={() => undefined}>
+          <div
+            name="%"
+            className="button l"
+            onClick={() => {
+              setTotal((total + value) / 100);
+              setValue(0);
+            }}
+          >
             %
           </div>
           <div name="/" className="button l" onClick={() => changeAction('/')}>
@@ -71,7 +95,7 @@ function App() {
           <div name="9" className="button" onClick={() => appendDigit(9)}>
             9
           </div>
-          <div name="*" className="button l">
+          <div name="*" className="button l" onClick={() => changeAction('*')}>
             *
           </div>
         </div>
@@ -104,14 +128,19 @@ function App() {
           </div>
         </div>
         <div className="calc-button-row">
-          <div name="." className="button" onClick={() => undefined}>
-            .
-          </div>
-          <div name="0" className="button" onClick={() => appendDigit(0)}>
+          <div name="0" className="button O" onClick={() => appendDigit(0)}>
             0
           </div>
-          <div name="CE" className="button" onClick={() => undefined}>
-            CE
+          <div
+            name="."
+            className="button"
+            onClick={
+              () => appendDot('.')
+              //setTotal(parseFloat(total.toString.concat('.')))
+              // total % 1 === 0 ? setTotal(parseFloat(total.toFixed(0))) : 'null'
+            }
+          >
+            .
           </div>
           <div name="=" className="button l" onClick={() => calculateTotal()}>
             =
